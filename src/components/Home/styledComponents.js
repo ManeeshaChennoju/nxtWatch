@@ -72,7 +72,7 @@ export const RetryButton = styled.button`
   background-color: blue;
   padding: 10px 20px 10px 20px;
   color: white;
-  font-size: bold;
+  font-weight: bold;
 `
 export const GetItNowButton = styled.button`
   border: 1px solid #262626;

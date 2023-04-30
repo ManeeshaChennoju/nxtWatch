@@ -64,6 +64,10 @@ class Home extends Component {
     this.getHomeVideos()
   }
 
+  onClickRetry = () => {
+    this.getHomeVideos()
+  }
+
   getHomeVideos = async () => {
     this.setState({apiStatus: homeApiStatusViews.in_progress})
     const {searchInput} = this.state
@@ -115,7 +119,7 @@ class Home extends Component {
 
   renderLoadingView = () => (
     <div className="loader-container" data-testid="loader">
-      <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
+      <Loader type="ThreeDots" color="green" height="50" width="50" />
     </div>
   )
 
@@ -157,10 +161,6 @@ class Home extends Component {
       default:
         return null
     }
-  }
-
-  onClickRetry = () => {
-    this.getHomeVideos()
   }
 
   render() {

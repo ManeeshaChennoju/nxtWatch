@@ -30,7 +30,7 @@ const HomeVideoItem = props => {
   console.log(duration)
   const {name, profileImageUrl} = updatedChannel
   return (
-    <Link to={`/videos/:${id}`}>
+    <Link to={`/videos/:${id}`} style={{textDecoration: 'none'}}>
       <CustomContainer as="li" main key={id}>
         <Image src={thumbnailUrl} alt="video thumbnail" />
         <CustomContainer logoAndPara>
