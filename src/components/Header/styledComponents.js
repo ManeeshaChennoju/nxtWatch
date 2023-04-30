@@ -10,8 +10,10 @@ export const DesktopViewHeader = styled.div`
   }
 `
 export const LogoImage = styled.img`
-  width: 170px;
-  height: 30px;
+  //   width: 170px;
+  //   height: 30px;
+  width: ${props => (props.profile ? '30px' : '170px')};
+  height: ${props => (props.profile ? '30px' : '30px')};
   @media screen and (max-width: 767px) {
     width: 140px;
     height: 25px;

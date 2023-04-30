@@ -1,24 +1,16 @@
-import {Link} from 'react-router-dom'
+import Cookies from 'js-cookie'
+import Loader from 'react-loader-spinner'
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 import {Component} from 'react'
-import {AiFillHome, AiFillFire} from 'react-icons/ai'
-// import {BsFire} from 'react-icons/bs'
-import {SiYoutubegaming} from 'react-icons/si'
-import {CgPlayListAdd} from 'react-icons/cg'
+import {HiSearch} from 'react-icons/hi'
+import {RiCloseLine} from 'react-icons/ri'
 import Header from '../Header'
+import SideBar from '../SideBar'
+import HomeVideoItem from '../HomeVideoItem'
+
 import {
   HomeContainer,
-  SideBar,
-  SideBarContainer,
-  BarItemAndName,
-  IconButton,
-  IconName,
-  ContactContainer,
   HomeContentContainer,
-  ContactHeading,
-  SocialNetworks,
-  Button,
-  Image,
-  SocialPara,
   PremiumContainer,
   ImgLogo,
   Para,
@@ -27,91 +19,189 @@ import {
   Input,
   SearchButton,
   VideosContainer,
+  CustomContainer,
+  FailureContainer,
+  RetryButton,
+  Heading,
+  CustomButton,
+  NoResultsFoundContainer,
 } from './styledComponents'
 
-const sideBarItemsList = [
-  {
-    id: 'HOME',
-    displayText: 'Home',
-    iconName: <AiFillHome size={25} />,
-  },
-  {
-    id: 'TRENDING',
-    displayText: 'Trending',
-    iconName: <AiFillFire size={25} />,
-  },
-  {
-    id: 'GAMING',
-    displayText: 'Gaming',
-    iconName: <SiYoutubegaming size={25} />,
-  },
-  {
-    id: 'SAVED_VIDEOS',
-    displayText: 'Saved Videos',
-    iconName: <CgPlayListAdd size={25} />,
-  },
-]
+const lightHomeFailureUrl =
+  'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png'
+const darkHomeFailureUrl =
+  'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png'
+const lightThemeLogo =
+  'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png'
+const darkThemeLogo =
+  'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-dark-theme-img.png'
+const noResultsUrl =
+  'https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png'
 
-const facebookUrl =
-  'https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png'
-const linkedInUrl =
-  'https://assets.ccbp.in/frontend/react-js/nxt-watch-linked-in-logo-img.png'
-const twitterUrl =
-  'https://assets.ccbp.in/frontend/react-js/nxt-watch-twitter-logo-img.png'
+const homeApiStatusViews = {
+  initial: 'INITIAL',
+  in_progress: 'IN_PROGRESS',
+  success: 'SUCCESS',
+  failure: 'FAILURE',
+}
 
 class Home extends Component {
-  state = {activeSideBar: 'HOME'}
+  state = {
+    apiStatus: homeApiStatusViews.initial,
+    searchInput: '',
+    videosList: [],
+  }
+
+  componentDidMount() {
+    this.getHomeVideos()
+  }
+
+  onChangeSearchInput = event => {
+    this.setState({searchInput: event.target.value})
+  }
+
+  onClickSearch = () => {
+    this.getHomeVideos()
+  }
+
+  getHomeVideos = async () => {
+    this.setState({apiStatus: homeApiStatusViews.in_progress})
+    const {searchInput} = this.state
+    const apiUrl = `https://apis.ccbp.in/videos/all?search=${searchInput}`
+    const jwtToken = Cookies.get('jwt_token')
+    const options = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    }
+    const response = await fetch(apiUrl, options)
+    if (response.ok === true) {
+      const data = await response.json()
+      const {videos} = data
+      const updatedVideos = videos.map(eachItem => ({
+        id: eachItem.id,
+        title: eachItem.title,
+        thumbnailUrl: eachItem.thumbnail_url,
+        channel: eachItem.channel,
+        viewCount: eachItem.view_count,
+        publishedAt: eachItem.published_at,
+      }))
+      this.setState({
+        videosList: updatedVideos,
+        apiStatus: homeApiStatusViews.success,
+      })
+      console.log(updatedVideos)
+    } else {
+      this.setState({apiStatus: homeApiStatusViews.failure})
+    }
+  }
+
+  renderHomeVideos = () => {
+    const {videosList, searchInput} = this.state
+    const filteredList = videosList.filter(eachItem =>
+      eachItem.title.toLowerCase().includes(searchInput.toLowerCase()),
+    )
+    return (
+      <>
+        {filteredList.length === 0
+          ? this.renderNoResultsFound()
+          : filteredList.map(eachItem => (
+              <HomeVideoItem key={eachItem.id} videoDetails={eachItem} />
+            ))}
+      </>
+    )
+  }
+
+  renderLoadingView = () => (
+    <div className="loader-container" data-testid="loader">
+      <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
+    </div>
+  )
+
+  renderHomeFailureView = () => (
+    <FailureContainer>
+      <ImgLogo src={lightHomeFailureUrl} alt="failure view" failure />
+      <Heading>Oops! Something Went Wrong</Heading>
+      <Para failurePara>
+        We are having some trouble complete your request.
+        <br />
+        Please try again.
+      </Para>
+      <CustomContainer retry>
+        <RetryButton onClick={this.onClickRetry}>Retry</RetryButton>
+      </CustomContainer>
+    </FailureContainer>
+  )
+
+  renderNoResultsFound = () => (
+    <NoResultsFoundContainer>
+      <ImgLogo src={noResultsUrl} failure alt="no videos" />
+      <Heading>No Search results found</Heading>
+      <Para failurePara>Try different key words or remove search filter</Para>
+      <CustomContainer retry>
+        <RetryButton onClick={this.onClickRetry}>Retry</RetryButton>
+      </CustomContainer>
+    </NoResultsFoundContainer>
+  )
+
+  renderHomeVideoViews = () => {
+    const {apiStatus} = this.state
+    switch (apiStatus) {
+      case homeApiStatusViews.in_progress:
+        return this.renderLoadingView()
+      case homeApiStatusViews.success:
+        return this.renderHomeVideos()
+      case homeApiStatusViews.failure:
+        return this.renderHomeFailureView()
+      default:
+        return null
+    }
+  }
+
+  onClickRetry = () => {
+    this.getHomeVideos()
+  }
 
   render() {
-    const {activeSideBar} = this.state
+    const {searchInput} = this.state
     return (
       <>
         <Header />
-        <HomeContainer>
-          <SideBar>
-            <SideBarContainer>
-              {sideBarItemsList.map(eachItem => {
-                const iconComponent = eachItem.iconName
-                return (
-                  <Link
-                    style={{textDecoration: 'none'}}
-                    to={`/${
-                      eachItem.id === 'HOME' ? '' : eachItem.id.toLowerCase()
-                    }`}
-                  >
-                    <BarItemAndName
-                      isActive={activeSideBar === eachItem.id}
-                      key={eachItem.id}
-                    >
-                      <IconButton isActive={activeSideBar === eachItem.id}>
-                        {iconComponent}
-                      </IconButton>
-                      <IconName isActive={activeSideBar === eachItem.id}>
-                        {eachItem.displayText}
-                      </IconName>
-                    </BarItemAndName>
-                  </Link>
-                )
-              })}
-            </SideBarContainer>
-            <ContactContainer>
-              <ContactHeading>CONTACT US</ContactHeading>
-              <SocialNetworks>
-                <Button type="button">
-                  <Image src={facebookUrl} alt="facebook logo" />
-                </Button>
-                <Button type="button">
-                  <Image src={linkedInUrl} alt="twitter logo" />
-                </Button>
-                <Button type="button">
-                  <Image src={twitterUrl} alt="linked in logo" />
-                </Button>
-              </SocialNetworks>
-              <SocialPara>
-                Enjoy! Now to see your channels and recommendations!
-              </SocialPara>
-            </ContactContainer>
-          </SideBar>
+        <HomeContainer data-testid="home">
+          <SideBar />
+          <HomeContentContainer>
+            <PremiumContainer data-testid="banner">
+              <CustomContainer imgAndClose>
+                <ImgLogo src={lightThemeLogo} alt="nxt watch logo" />
+                <CustomButton close data-testid="close">
+                  <RiCloseLine size={25} />
+                </CustomButton>
+              </CustomContainer>
+              <Para>
+                Buy Nxt Watch Premium prepaid plans with <br /> UPI
+              </Para>
+              <CustomContainer>
+                <GetItNowButton type="button">GET IT NOW</GetItNowButton>
+              </CustomContainer>
+            </PremiumContainer>
+            <InputContainer>
+              <Input
+                type="search"
+                placeholder="Search"
+                value={searchInput}
+                onChange={this.onChangeSearchInput}
+              />
+              <SearchButton
+                data-testid="searchButton"
+                type="button"
+                onClick={this.onClickSearch}
+              >
+                <HiSearch size={20} />
+              </SearchButton>
+            </InputContainer>
+            <VideosContainer>{this.renderHomeVideoViews()}</VideosContainer>
+          </HomeContentContainer>
         </HomeContainer>
       </>
     )
