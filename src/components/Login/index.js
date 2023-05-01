@@ -1,6 +1,7 @@
 import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
 import {Component} from 'react'
+import ThemeContext from '../../context/ThemeContext'
 import {
   LoginContainer,
   ResponsiveContainer,
@@ -66,12 +67,15 @@ class Login extends Component {
     }
   }
 
-  renderUsername = () => {
+  renderUsername = isDark => {
     const {username} = this.state
     return (
       <>
-        <Label htmlFor="usernameInput">USERNAME</Label>
+        <Label isDark={isDark} htmlFor="usernameInput">
+          USERNAME
+        </Label>
         <Input
+          isDark={isDark}
           id="usernameInput"
           type="text"
           value={username}
@@ -82,12 +86,15 @@ class Login extends Component {
     )
   }
 
-  renderPassword = () => {
+  renderPassword = isDark => {
     const {password, isPasswordShow} = this.state
     return (
       <>
-        <Label htmlFor="passwordInput">PASSWORD</Label>
+        <Label isDark={isDark} htmlFor="passwordInput">
+          PASSWORD
+        </Label>
         <Input
+          isDark={isDark}
           id="passwordInput"
           type={isPasswordShow ? 'text' : 'password'}
           value={password}
@@ -98,7 +105,7 @@ class Login extends Component {
     )
   }
 
-  renderShowPassword = () => {
+  renderShowPassword = isDark => {
     const {isPasswordShow} = this.state
     return (
       <ShowPasswordContainer>
@@ -109,7 +116,7 @@ class Login extends Component {
           checked={isPasswordShow}
           onChange={this.onToggleShowPassword}
         />
-        <Label showPassword htmlFor="myCheckbox">
+        <Label isDark={isDark} showPassword htmlFor="myCheckbox">
           Show Password
         </Label>
       </ShowPasswordContainer>
@@ -123,20 +130,28 @@ class Login extends Component {
       return <Redirect to="/" />
     }
     return (
-      <LoginContainer>
-        <ResponsiveContainer>
-          <LogoContainer>
-            <Image src={logoLightTheme} alt="website logo" />
-          </LogoContainer>
-          <FormContainer onSubmit={this.onSubmitForm}>
-            {this.renderUsername()}
-            {this.renderPassword()}
-            {this.renderShowPassword()}
-            <Button type="submit">Login</Button>
-            {isError && <ErrorPara>*{errorMsg}</ErrorPara>}
-          </FormContainer>
-        </ResponsiveContainer>
-      </LoginContainer>
+      <ThemeContext.Consumer>
+        {value => {
+          const {isDark} = value
+          const loginLogo = isDark ? logoDarkTheme : logoLightTheme
+          return (
+            <LoginContainer isDark={isDark}>
+              <ResponsiveContainer isDark={isDark}>
+                <LogoContainer>
+                  <Image src={loginLogo} alt="website logo" />
+                </LogoContainer>
+                <FormContainer onSubmit={this.onSubmitForm}>
+                  {this.renderUsername(isDark)}
+                  {this.renderPassword(isDark)}
+                  {this.renderShowPassword(isDark)}
+                  <Button type="submit">Login</Button>
+                  {isError && <ErrorPara>*{errorMsg}</ErrorPara>}
+                </FormContainer>
+              </ResponsiveContainer>
+            </LoginContainer>
+          )
+        }}
+      </ThemeContext.Consumer>
     )
   }
 }

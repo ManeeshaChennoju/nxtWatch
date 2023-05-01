@@ -3,6 +3,7 @@ import {Component} from 'react'
 import {AiFillHome, AiFillFire} from 'react-icons/ai'
 import {SiYoutubegaming} from 'react-icons/si'
 import {CgPlayListAdd} from 'react-icons/cg'
+import ThemeContext from '../../context/ThemeContext'
 
 import {
   SideBarMain,
@@ -54,50 +55,67 @@ class SideBar extends Component {
   render() {
     const {activeSideBar} = this.state
     return (
-      <SideBarMain>
-        <SideBarContainer>
-          {sideBarItemsList.map(eachItem => {
-            const iconComponent = eachItem.iconName
-            return (
-              <Link
-                style={{textDecoration: 'none'}}
-                to={`/${
-                  eachItem.id === 'HOME' ? '' : eachItem.id.toLowerCase()
-                }`}
-              >
-                <BarItemAndName
-                  isActive={activeSideBar === eachItem.id}
-                  key={eachItem.id}
-                >
-                  <IconButton isActive={activeSideBar === eachItem.id}>
-                    {iconComponent}
-                  </IconButton>
-                  <IconName isActive={activeSideBar === eachItem.id}>
-                    {eachItem.displayText}
-                  </IconName>
-                </BarItemAndName>
-              </Link>
-            )
-          })}
-        </SideBarContainer>
-        <ContactContainer>
-          <ContactHeading>CONTACT US</ContactHeading>
-          <SocialNetworks>
-            <Button type="button">
-              <Image src={facebookUrl} alt="facebook logo" />
-            </Button>
-            <Button type="button">
-              <Image src={linkedInUrl} alt="linked in logo" />
-            </Button>
-            <Button type="button">
-              <Image src={twitterUrl} alt="twitter logo" />
-            </Button>
-          </SocialNetworks>
-          <SocialPara>
-            Enjoy! Now to see your channels and recommendations!
-          </SocialPara>
-        </ContactContainer>
-      </SideBarMain>
+      <ThemeContext.Consumer>
+        {value => {
+          const {isDark} = value
+          return (
+            <SideBarMain isDark={isDark}>
+              <SideBarContainer isDark={isDark}>
+                {sideBarItemsList.map(eachItem => {
+                  const iconComponent = eachItem.iconName
+                  return (
+                    <Link
+                      style={{textDecoration: 'none'}}
+                      to={`/${
+                        eachItem.id === 'HOME' ? '' : eachItem.id.toLowerCase()
+                      }`}
+                    >
+                      <BarItemAndName
+                        isDark={isDark}
+                        isActive={activeSideBar === eachItem.id}
+                        key={eachItem.id}
+                      >
+                        <IconButton
+                          isDark={isDark}
+                          isActive={activeSideBar === eachItem.id}
+                        >
+                          {iconComponent}
+                        </IconButton>
+                        <IconName
+                          isDark={isDark}
+                          isActive={activeSideBar === eachItem.id}
+                          fontWeight={
+                            activeSideBar === eachItem.id ? 'bold' : 'normal'
+                          }
+                        >
+                          {eachItem.displayText}
+                        </IconName>
+                      </BarItemAndName>
+                    </Link>
+                  )
+                })}
+              </SideBarContainer>
+              <ContactContainer isDark={isDark}>
+                <ContactHeading isDark={isDark}>CONTACT US</ContactHeading>
+                <SocialNetworks>
+                  <Button type="button">
+                    <Image src={facebookUrl} alt="facebook logo" />
+                  </Button>
+                  <Button type="button">
+                    <Image src={linkedInUrl} alt="linked in logo" />
+                  </Button>
+                  <Button type="button">
+                    <Image src={twitterUrl} alt="twitter logo" />
+                  </Button>
+                </SocialNetworks>
+                <SocialPara isDark={isDark}>
+                  Enjoy! Now to see your channels and recommendations!
+                </SocialPara>
+              </ContactContainer>
+            </SideBarMain>
+          )
+        }}
+      </ThemeContext.Consumer>
     )
   }
 }

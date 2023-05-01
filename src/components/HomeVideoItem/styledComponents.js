@@ -6,11 +6,15 @@ export const CustomContainer = styled.div`
   flex-direction: ${props => (props.logoAndPara ? 'row' : 'column')};
   align-items:${props => (props.logoAndPara ? 'center' : '')}
   width: ${props => (props.logoAndPara ? '100%' : '')};
-  width: ${props => (props.main ? '350px' : '')};
+  width: ${props => (props.main ? '390px' : '')};
   height: ${props => (props.main ? '380px' : '')};
 //   width:${props => (props.content ? '280px' : '')};
   margin-right:${props => (props.main ? '20px' : '')};
   margin-bottom:${props => (props.main ? '15px' : '')};
+  color:${props => (props.isDark ? 'white' : 'black')};
+  @media screen and (max-width:767px){
+     width: ${props => (props.main ? '100%' : '')}; 
+  }
 `
 
 export const Image = styled.img`
@@ -20,7 +24,7 @@ export const Image = styled.img`
   margin-right: ${props => (props.videoLogo ? '8px' : '')};
 `
 export const CustomPara = styled.p`
-  color: black;
+  color: ${props => (props.isDark ? '#b3b3b3' : 'black')};
   font-weight: 600;
   margin-right: 10px;
   margin-top: ${props => (props.name ? 0 : '')};
@@ -32,4 +36,5 @@ export const ViewCountAndDays = styled.div`
   align-items: center;
   margin-top: 0;
   padding-top: 0;
+  color: ${props => (props.isDark ? '#b3b3b3' : 'black')};
 `

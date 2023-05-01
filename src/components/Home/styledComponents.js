@@ -6,6 +6,7 @@ export const HomeContainer = styled.div`
   height: 90vh;
   @media screen and (max-width: 767px) {
     flex-direction: column;
+    width: 100%;
   }
 `
 export const MainSideBarContainer = styled.div`
@@ -20,6 +21,7 @@ export const HomeContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  background-color: ${props => (props.isDark ? '#000000' : 'white')};
   @media screen and (max-width: 767px) {
     width: 100%;
   }
@@ -36,7 +38,7 @@ export const PremiumContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 5px;
+  padding: 20px;
 `
 
 export const ImgLogo = styled.img`
@@ -92,6 +94,11 @@ export const InputContainer = styled.div`
   width: 500px;
   margin-top: 20px;
   margin-bottom: 20px;
+  margin-left: 20px;
+  background-color: transparent;
+  @media screen and (max-width: 767px) {
+    width: 300px;
+  }
 `
 export const Input = styled.input`
   border: none;
@@ -100,6 +107,7 @@ export const Input = styled.input`
   font-weight: bold;
   font-size: 13px;
   padding: 5px;
+  background-color: transparent;
 `
 export const SearchButton = styled.button`
   height: 39px;
@@ -109,6 +117,7 @@ export const SearchButton = styled.button`
   align-items: center;
   padding-left: 15px;
   padding-right: 15px;
+  background-color: ${props => (props.isDark ? 'transparent' : '')};
 `
 // search input container
 
@@ -118,7 +127,12 @@ export const VideosContainer = styled.ul`
   flex-wrap: wrap;
   width: 100%;
   padding-left: 0;
+  margin-left: 20px;
   overflow-y: scroll;
+  @media screen and (max-width: 767px) {
+    width: 100%;
+    margin: 20px 5px 20px 5px;
+  }
 `
 // videos container
 
@@ -128,6 +142,7 @@ export const FailureContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: ${props => (props.isDark ? '#000000' : '#ffffff')};
 `
 
 export const Heading = styled.h1`

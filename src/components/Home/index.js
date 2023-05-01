@@ -7,6 +7,7 @@ import {RiCloseLine} from 'react-icons/ri'
 import Header from '../Header'
 import SideBar from '../SideBar'
 import HomeVideoItem from '../HomeVideoItem'
+import ThemeContext from '../../context/ThemeContext'
 
 import {
   HomeContainer,
@@ -101,7 +102,7 @@ class Home extends Component {
     }
   }
 
-  renderHomeVideos = () => {
+  renderHomeVideos = isDark => {
     const {videosList, searchInput} = this.state
     const filteredList = videosList.filter(eachItem =>
       eachItem.title.toLowerCase().includes(searchInput.toLowerCase()),
@@ -109,9 +110,13 @@ class Home extends Component {
     return (
       <>
         {filteredList.length === 0
-          ? this.renderNoResultsFound()
+          ? this.renderNoResultsFound(isDark)
           : filteredList.map(eachItem => (
-              <HomeVideoItem key={eachItem.id} videoDetails={eachItem} />
+              <HomeVideoItem
+                isDark={isDark}
+                key={eachItem.id}
+                videoDetails={eachItem}
+              />
             ))}
       </>
     )
@@ -123,9 +128,13 @@ class Home extends Component {
     </div>
   )
 
-  renderHomeFailureView = () => (
+  renderHomeFailureView = isDark => (
     <FailureContainer>
-      <ImgLogo src={lightHomeFailureUrl} alt="failure view" failure />
+      <ImgLogo
+        src={isDark ? darkHomeFailureUrl : lightHomeFailureUrl}
+        alt="failure view"
+        failure
+      />
       <Heading>Oops! Something Went Wrong</Heading>
       <Para failurePara>
         We are having some trouble complete your request.
@@ -149,15 +158,15 @@ class Home extends Component {
     </NoResultsFoundContainer>
   )
 
-  renderHomeVideoViews = () => {
+  renderHomeVideoViews = isDark => {
     const {apiStatus} = this.state
     switch (apiStatus) {
       case homeApiStatusViews.in_progress:
-        return this.renderLoadingView()
+        return this.renderLoadingView(isDark)
       case homeApiStatusViews.success:
-        return this.renderHomeVideos()
+        return this.renderHomeVideos(isDark)
       case homeApiStatusViews.failure:
-        return this.renderHomeFailureView()
+        return this.renderHomeFailureView(isDark)
       default:
         return null
     }
@@ -168,41 +177,51 @@ class Home extends Component {
     return (
       <>
         <Header />
-        <HomeContainer data-testid="home">
-          <SideBar />
-          <HomeContentContainer>
-            <PremiumContainer data-testid="banner">
-              <CustomContainer imgAndClose>
-                <ImgLogo src={lightThemeLogo} alt="nxt watch logo" />
-                <CustomButton close data-testid="close">
-                  <RiCloseLine size={25} />
-                </CustomButton>
-              </CustomContainer>
-              <Para>
-                Buy Nxt Watch Premium prepaid plans with <br /> UPI
-              </Para>
-              <CustomContainer>
-                <GetItNowButton type="button">GET IT NOW</GetItNowButton>
-              </CustomContainer>
-            </PremiumContainer>
-            <InputContainer>
-              <Input
-                type="search"
-                placeholder="Search"
-                value={searchInput}
-                onChange={this.onChangeSearchInput}
-              />
-              <SearchButton
-                data-testid="searchButton"
-                type="button"
-                onClick={this.onClickSearch}
-              >
-                <HiSearch size={20} />
-              </SearchButton>
-            </InputContainer>
-            <VideosContainer>{this.renderHomeVideoViews()}</VideosContainer>
-          </HomeContentContainer>
-        </HomeContainer>
+        <ThemeContext.Consumer>
+          {value => {
+            const {isDark} = value
+            return (
+              <HomeContainer data-testid="home">
+                <SideBar />
+                <HomeContentContainer isDark={isDark}>
+                  <PremiumContainer data-testid="banner">
+                    <CustomContainer imgAndClose>
+                      <ImgLogo src={lightThemeLogo} alt="nxt watch logo" />
+                      <CustomButton close data-testid="close">
+                        <RiCloseLine size={25} />
+                      </CustomButton>
+                    </CustomContainer>
+                    <Para>
+                      Buy Nxt Watch Premium prepaid plans with <br /> UPI
+                    </Para>
+                    <CustomContainer>
+                      <GetItNowButton type="button">GET IT NOW</GetItNowButton>
+                    </CustomContainer>
+                  </PremiumContainer>
+                  <InputContainer>
+                    <Input
+                      type="search"
+                      placeholder="Search"
+                      value={searchInput}
+                      onChange={this.onChangeSearchInput}
+                    />
+                    <SearchButton
+                      data-testid="searchButton"
+                      type="button"
+                      onClick={this.onClickSearch}
+                      isDark={isDark}
+                    >
+                      <HiSearch size={20} color={isDark ? 'white' : 'black'} />
+                    </SearchButton>
+                  </InputContainer>
+                  <VideosContainer>
+                    {this.renderHomeVideoViews(isDark)}
+                  </VideosContainer>
+                </HomeContentContainer>
+              </HomeContainer>
+            )
+          }}
+        </ThemeContext.Consumer>
       </>
     )
   }

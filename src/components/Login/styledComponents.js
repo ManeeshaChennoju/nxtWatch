@@ -8,13 +8,18 @@ export const LoginContainer = styled.div`
   width: 100%;
   padding: 30px;
   height: 100vh;
+  background-color: ${props => (props.isDark ? '#404040' : '#f2f2f2')};
 `
 export const ResponsiveContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background-image: linear-gradient(#f2f2f2, #e6e6e6);
   padding: 20px;
-  box-shadow: 1px 1px 1px 1px #f2f2f2;
+  box-shadow: ${props =>
+    props.isDark ? '1px 1px 1px 1px #000000' : '1px 1px 1px 1px #f2f2f2'};
+  background-image: ${props =>
+    props.isDark
+      ? 'linear-gradient(#000000,#0d0d0d)'
+      : 'linear-gradient(#f2f2f2,#e6e6e6)'};
 `
 
 export const LogoContainer = styled.div`
@@ -46,6 +51,7 @@ export const Label = styled.label`
   font-weight: 600;
   margin-bottom: 2px;
   align-self: flex-start;
+  color: ${props => (props.isDark ? 'white' : 'black')};
 `
 export const Input = styled.input`
   width: ${props => (props.checkbox ? '20px' : '400px')};

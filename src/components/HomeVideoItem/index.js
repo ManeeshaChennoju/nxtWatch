@@ -8,7 +8,7 @@ import {
 } from './styledComponents'
 
 const HomeVideoItem = props => {
-  const {videoDetails} = props
+  const {videoDetails, isDark} = props
   const {
     id,
     title,
@@ -35,12 +35,16 @@ const HomeVideoItem = props => {
         <Image src={thumbnailUrl} alt="video thumbnail" />
         <CustomContainer logoAndPara>
           <Image videoLogo src={profileImageUrl} alt="channel logo" />
-          <CustomContainer content>
-            <CustomPara title>{title}</CustomPara>
-            <CustomPara name>{name}</CustomPara>
-            <ViewCountAndDays>
-              <CustomPara>{viewCount} views</CustomPara>
-              <CustomPara>. {publishedAt}</CustomPara>
+          <CustomContainer content isDark={isDark}>
+            <CustomPara isDark={isDark} title>
+              {title}
+            </CustomPara>
+            <CustomPara isDark={isDark} name>
+              {name}
+            </CustomPara>
+            <ViewCountAndDays isDark={isDark}>
+              <CustomPara isDark={isDark}>{viewCount} views</CustomPara>
+              <CustomPara isDark={isDark}>. {publishedAt}</CustomPara>
             </ViewCountAndDays>
           </CustomContainer>
         </CustomContainer>
