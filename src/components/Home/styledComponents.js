@@ -153,6 +153,12 @@ export const Heading = styled.h1`
 
 // No results Found
 
-export const NoResultsFoundContainer = styled(FailureContainer)``
+export const NoResultsFoundContainer = styled(FailureContainer)`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+`
 
 // No results Found

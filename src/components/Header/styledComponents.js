@@ -74,6 +74,7 @@ export const PopupContainer = styled.div`
   //   width: 400px;
   //   height: 300px;
   width: 100%;
+  margin: 0;
   border-radius: 5px;
   background-color: ${props => (props.isDark ? '#260d0d' : 'white')};
 `
@@ -81,8 +82,9 @@ export const PopupButtons = styled.div`
   display: ${props => (props.main ? 'flex' : '')};
   align-items: ${props => (props.main ? 'center' : '')};
   justify-content: ${props => (props.main ? 'center' : '')};
-  margin-right: 20px;
+  //   margin-right: 20px;
   width: 100%;
+  //   background-color: yellow;
   @media screen and (max-width: 767px) {
     margin-right: 10px;
   }
@@ -102,7 +104,7 @@ export const CancelButton = styled.button`
   color: ${props => (props.isDark ? '#ffffff' : '#000000')};
   font-weight: bold;
   padding: 10px 20px 10px 20px;
-  margin-left: 10px;
+  margin: 10px 20px 20px 0px;
   @media screen and (max-width: 767px) {
     padding: 5px 10px 5px 10px;
   }
@@ -115,6 +117,7 @@ export const ConfirmButton = styled.button`
   color: ${props => (props.isDark ? '#ffffff' : '#000000')};
   font-weight: bold;
   padding: 10px 20px 10px 20px;
+  margin: 10px 20px 20px 0px;
   @media screen and (max-width: 767px) {
     padding: 5px 10px 5px 10px;
   }

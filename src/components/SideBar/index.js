@@ -57,6 +57,10 @@ const twitterUrl =
 class SideBar extends Component {
   state = {activeSideBar: sideBarItemsList[0].id}
 
+  onClickSideBarItem = event => {
+    this.setState({activeSideBar: event.target.id})
+  }
+
   render() {
     const {activeSideBar} = this.state
     return (
@@ -69,20 +73,37 @@ class SideBar extends Component {
                 {sideBarItemsList.map(eachItem => {
                   const iconComponent = eachItem.iconName
                   return (
-                    <Link style={{textDecoration: 'none'}} to={eachItem.path}>
+                    <Link
+                      id={eachItem.id}
+                      style={{textDecoration: 'none'}}
+                      to={eachItem.path}
+                    >
                       <BarItemAndName
                         key={eachItem.id}
+                        id={eachItem.id}
                         isDark={isDark}
                         isActive={activeSideBar === eachItem.id}
+                        // onClick={this.onClickSideBarItem}
                       >
                         <IconButton
+                          onClick={this.onClickSideBarItem}
                           isDark={isDark}
+                          id={eachItem.id}
+                          style={{
+                            color: `${
+                              activeSideBar === eachItem.id
+                                ? 'red'
+                                : `${isDark ? 'white' : 'black'}`
+                            }`,
+                          }}
                           isActive={activeSideBar === eachItem.id}
                         >
                           {iconComponent}
                         </IconButton>
                         <IconName
+                          onClick={this.onClickSideBarItem}
                           isDark={isDark}
+                          id={eachItem.id}
                           isActive={activeSideBar === eachItem.id}
                           fontWeight={
                             activeSideBar === eachItem.id ? 'bold' : 'normal'

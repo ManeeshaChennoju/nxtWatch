@@ -53,24 +53,20 @@ class Header extends Component {
             Are you sure, you want to logout
           </PopupHeading>
           <PopupButtons isDark={isDark} main>
-            <PopupButtons>
-              <CancelButton
-                isDark={isDark}
-                onClick={() => close()}
-                type="button"
-              >
-                Cancel
-              </CancelButton>
-            </PopupButtons>
-            <PopupButtons>
-              <ConfirmButton
-                type="button"
-                onClick={this.onClickLogout}
-                isDark={isDark}
-              >
-                Confirm
-              </ConfirmButton>
-            </PopupButtons>
+            {/* <PopupButtons> */}
+            <CancelButton isDark={isDark} onClick={() => close()} type="button">
+              Cancel
+            </CancelButton>
+            {/* </PopupButtons> */}
+            {/* <PopupButtons> */}
+            <ConfirmButton
+              type="button"
+              onClick={this.onClickLogout}
+              isDark={isDark}
+            >
+              Confirm
+            </ConfirmButton>
+            {/* </PopupButtons> */}
           </PopupButtons>
         </PopupContainer>
       )}
@@ -93,24 +89,17 @@ class Header extends Component {
             Are you sure, you want to logout
           </PopupHeading>
           <PopupButtons isDark={isDark} main>
-            <PopupButtons>
-              <CancelButton
-                isDark={isDark}
-                onClick={() => close()}
-                type="button"
-              >
-                Cancel
-              </CancelButton>
-            </PopupButtons>
-            <PopupButtons>
-              <ConfirmButton
-                type="button"
-                onClick={this.onClickLogout}
-                isDark={isDark}
-              >
-                Confirm
-              </ConfirmButton>
-            </PopupButtons>
+            <CancelButton isDark={isDark} onClick={() => close()} type="button">
+              Cancel
+            </CancelButton>
+
+            <ConfirmButton
+              type="button"
+              onClick={this.onClickLogout}
+              isDark={isDark}
+            >
+              Confirm
+            </ConfirmButton>
           </PopupButtons>
         </PopupContainer>
       )}
