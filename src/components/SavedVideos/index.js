@@ -1,17 +1,15 @@
-import {Component} from 'react'
-
 import Header from '../Header'
 import SideBar from '../SideBar'
 
-class SavedVideos extends Component {
-  render() {
-    return (
-      <>
-        <Header />
-        <p>SavedVideos</p>
-      </>
-    )
-  }
+const SavedVideos = props => {
+  const {savedVideosList} = props
+  console.log(savedVideosList, 'saved vidoes')
+  return (
+    <>
+      <Header />
+      <p>SavedVideos</p>
+    </>
+  )
 }
 
 export default SavedVideos

@@ -8,7 +8,7 @@ import {
 } from './styledComponents'
 
 const HomeVideoItem = props => {
-  const {videoDetails, isDark} = props
+  const {videoDetails, theme} = props
   const {
     id,
     title,
@@ -27,24 +27,24 @@ const HomeVideoItem = props => {
   const array = formattedDays.split(' ')
   const days = array.splice(1)
   const duration = `${days.join(' ')} ago`
-  console.log(duration)
+  //   console.log(duration)
   const {name, profileImageUrl} = updatedChannel
   return (
-    <Link to={`/videos/:${id}`} style={{textDecoration: 'none'}}>
+    <Link to={`/videos/${id}`} style={{textDecoration: 'none'}}>
       <CustomContainer as="li" main key={id}>
         <Image src={thumbnailUrl} alt="video thumbnail" />
         <CustomContainer logoAndPara>
           <Image videoLogo src={profileImageUrl} alt="channel logo" />
-          <CustomContainer content isDark={isDark}>
-            <CustomPara isDark={isDark} title>
+          <CustomContainer content="true" isDark={theme}>
+            <CustomPara isDark={theme} title="true">
               {title}
             </CustomPara>
-            <CustomPara isDark={isDark} name>
+            <CustomPara isDark={theme} name="true">
               {name}
             </CustomPara>
-            <ViewCountAndDays isDark={isDark}>
-              <CustomPara isDark={isDark}>{viewCount} views</CustomPara>
-              <CustomPara isDark={isDark}>. {publishedAt}</CustomPara>
+            <ViewCountAndDays isDark={theme}>
+              <CustomPara isDark={theme}>{viewCount} views</CustomPara>
+              <CustomPara isDark={theme}>. {publishedAt}</CustomPara>
             </ViewCountAndDays>
           </CustomContainer>
         </CustomContainer>

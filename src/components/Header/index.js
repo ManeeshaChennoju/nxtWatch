@@ -138,7 +138,12 @@ class Header extends Component {
                     )}
                   </IconsButton>
                   <IconsButton>
-                    <LogoImage src={ProfileUrl} alt="profile" profile />
+                    <LogoImage
+                      src={ProfileUrl}
+                      alt="profile"
+                      height={30}
+                      width={30}
+                    />
                   </IconsButton>
                   {this.renderLogoutPopup(isDark)}
                 </ItemsContainer>

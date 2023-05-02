@@ -17,26 +17,31 @@ import {
   Button,
   Image,
   SocialPara,
+  SocialLi,
 } from './styledComponents'
 
 const sideBarItemsList = [
   {
     id: 'HOME',
+    path: '/',
     displayText: 'Home',
     iconName: <AiFillHome size={25} />,
   },
   {
     id: 'TRENDING',
+    path: 'trending',
     displayText: 'Trending',
     iconName: <AiFillFire size={25} />,
   },
   {
     id: 'GAMING',
+    path: 'gaming',
     displayText: 'Gaming',
     iconName: <SiYoutubegaming size={25} />,
   },
   {
     id: 'SAVED_VIDEOS',
+    path: 'saved-videos',
     displayText: 'Saved Videos',
     iconName: <CgPlayListAdd size={25} />,
   },
@@ -50,7 +55,7 @@ const twitterUrl =
   'https://assets.ccbp.in/frontend/react-js/nxt-watch-twitter-logo-img.png'
 
 class SideBar extends Component {
-  state = {activeSideBar: 'HOME'}
+  state = {activeSideBar: sideBarItemsList[0].id}
 
   render() {
     const {activeSideBar} = this.state
@@ -64,16 +69,11 @@ class SideBar extends Component {
                 {sideBarItemsList.map(eachItem => {
                   const iconComponent = eachItem.iconName
                   return (
-                    <Link
-                      style={{textDecoration: 'none'}}
-                      to={`/${
-                        eachItem.id === 'HOME' ? '' : eachItem.id.toLowerCase()
-                      }`}
-                    >
+                    <Link style={{textDecoration: 'none'}} to={eachItem.path}>
                       <BarItemAndName
+                        key={eachItem.id}
                         isDark={isDark}
                         isActive={activeSideBar === eachItem.id}
-                        key={eachItem.id}
                       >
                         <IconButton
                           isDark={isDark}
@@ -98,15 +98,21 @@ class SideBar extends Component {
               <ContactContainer isDark={isDark}>
                 <ContactHeading isDark={isDark}>CONTACT US</ContactHeading>
                 <SocialNetworks>
-                  <Button type="button">
-                    <Image src={facebookUrl} alt="facebook logo" />
-                  </Button>
-                  <Button type="button">
-                    <Image src={linkedInUrl} alt="linked in logo" />
-                  </Button>
-                  <Button type="button">
-                    <Image src={twitterUrl} alt="twitter logo" />
-                  </Button>
+                  <SocialLi key="1">
+                    <Button type="button">
+                      <Image src={facebookUrl} alt="facebook logo" />
+                    </Button>
+                  </SocialLi>
+                  <SocialLi key="2">
+                    <Button type="button">
+                      <Image src={linkedInUrl} alt="linked in logo" />
+                    </Button>
+                  </SocialLi>
+                  <SocialLi key="3">
+                    <Button type="button">
+                      <Image src={twitterUrl} alt="twitter logo" />
+                    </Button>
+                  </SocialLi>
                 </SocialNetworks>
                 <SocialPara isDark={isDark}>
                   Enjoy! Now to see your channels and recommendations!

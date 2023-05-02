@@ -71,6 +71,10 @@ export const SocialNetworks = styled.ul`
   padding: 0;
   margin: 0;
 `
+export const SocialLi = styled.li`
+  list-style-type: none;
+`
+
 export const Button = styled.button`
   display: flex;
   justify-content: center;

@@ -96,7 +96,6 @@ class Home extends Component {
         videosList: updatedVideos,
         apiStatus: homeApiStatusViews.success,
       })
-      console.log(updatedVideos)
     } else {
       this.setState({apiStatus: homeApiStatusViews.failure})
     }
@@ -113,7 +112,7 @@ class Home extends Component {
           ? this.renderNoResultsFound(isDark)
           : filteredList.map(eachItem => (
               <HomeVideoItem
-                isDark={isDark}
+                theme={isDark}
                 key={eachItem.id}
                 videoDetails={eachItem}
               />
